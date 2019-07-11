@@ -10,31 +10,25 @@ services:
         target: /etc/nginx/nginx.conf
       ports:
       - target: 80
-        published: 80
+        published: 81
         protocol: tcp
       depends_on:
         - client
         - server
     server:
-      image: docker.io/qamattjohunt/playground:latest
+      image: 127.0.0.1:5000/server
       build:
         context: ./server
         dockerfile: Dockerfile
-      ports:
-      - "8080:8080"
     client:
-      image: docker.io/qamattjohunt/react:latest
+      image: 127.0.0.1:5000/client
       build:
         context: ./client
         dockerfile: Dockerfile
-      ports:
-      - "3000:3000"
       environment:
       - REACT_APP_SERVICE_HOST=${REACT_APP_SERVICE_HOST}
     mongo:
       image: mongo
-      ports:
-      - "27017:27017"
     mongo-seed:
       image: fvilers/mongo-seed:1.0.0
       environment:
